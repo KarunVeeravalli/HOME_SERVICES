@@ -1,0 +1,88 @@
+Expected Api's
+
+
+🔐 Auth
+========
+
+POST /auth/register – Register a new user (name, mobile, email, password)
+POST /auth/login – Authenticate user and issue JWT
+POST /auth/logout – Invalidate user session/token
+
+👤 Users
+=========
+
+GET /users/{id} – Get user details
+PUT /users/{id} – Update user profile
+DELETE /users/{id} – Deactivate or delete user account
+GET /users/{id}/addresses – List user addresses
+
+📍 Address
+===========
+
+POST /addresses – Add new address for a user
+PUT /addresses/{id} – Edit an existing address
+DELETE /addresses/{id} – Remove an address
+
+📦 Subscription Plans
+=======================
+
+GET /plans – List all available subscription plans
+GET /plans/{id} – Details of a specific plan
+POST /plans – Create new subscription plan (admin)
+PUT /plans/{id} – Update plan details (admin)
+
+📄 User Subscription
+======================
+
+GET /subscriptions/user/{userId} – Get current or past subscriptions
+POST /subscriptions – Start a new subscription
+PUT /subscriptions/{id}/renew – Renew existing subscription
+
+🧰 Service Categories & Items
+================================
+
+GET /services/categories – List all service categories
+GET /services/category/{id} – Get services in a category
+GET /services/item/{id} – Get details of a specific service item
+
+🚰 Service Requests
+=====================
+
+GET /requests/user/{userId} – List of user’s past/current requests
+POST /requests – Create a new service booking request
+PUT /requests/{id}/status – Update request status (assigned, in-progress, complete)
+GET /requests/{id} – Get service request details
+
+🧑‍🔧 Technicians
+==================
+
+GET /technicians – List all technicians
+GET /technicians/{id} – Technician profile and expertise
+POST /technicians – Add new technician (admin only)
+PUT /technicians/{id} – Update technician details (admin)
+
+💸 Payments
+===========
+
+POST /payments – Record a payment (subscription or job equipment)
+GET /payments/user/{userId} – Get user’s payment history
+GET /payments/{id} – View a specific payment
+
+📢 Notifications
+==================
+
+GET /notifications/user/{userId} – List of alerts/notifications
+
+⭐ Feedback
+===============
+
+POST /feedback – Submit rating and review for completed job
+GET /feedback/service/{serviceId} – Get all feedback for a specific service
+
+📊 Admin Panel APIs
+========================
+
+GET /admin/reports/usage – Generate usage metrics (daily/monthly services)
+GET /admin/reports/revenue – View income, subscriptions, transactions
+GET /admin/auditlogs – Get system audit history
+

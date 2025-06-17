@@ -1,4 +1,14 @@
-# Intial setup completed untill security
-# Need to add Log Folder Properly
 
-# checking the branch
+Modules to be completed
+-----------------------
+1) Tables need to be create ()
+2) Check the category functionality
+
+
+
+Completed modules
+------------------
+1) Initial setup
+2) Security(including jwt and email)
+3) Loggers
+4) Encryption
