@@ -1,4 +1,6 @@
-package com.homeservices.request.dto;
+package com.homeservices.dto.request;
+
+import com.homeservices.util.CRequest;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignupRequest {
+public class SignupRequest extends CRequest{
 	
 	@Nonnull
 	private String username;

@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.homeservices.dto.request.EmailDto;
 import com.homeservices.enums.Status;
 import com.homeservices.exception.EmailException;
 import com.homeservices.exception.OtpEntityException;
@@ -12,7 +13,6 @@ import com.homeservices.exception.UserProfileException;
 import com.homeservices.model.Email;
 import com.homeservices.model.OtpEntity;
 import com.homeservices.repo.EmailRepo;
-import com.homeservices.request.dto.EmailDto;
 import com.homeservices.service.EmailService;
 import com.homeservices.service.OtpEntityService;
 import com.homeservices.util.RepoHelper;

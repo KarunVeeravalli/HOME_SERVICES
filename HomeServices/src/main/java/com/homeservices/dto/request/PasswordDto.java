@@ -1,4 +1,6 @@
-package com.homeservices.request.dto;
+package com.homeservices.dto.request;
+
+import com.homeservices.util.CRequest;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordDto {
+public class PasswordDto extends CRequest{
 	
 	@NotNull
 	private String email;

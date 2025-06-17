@@ -1,9 +1,9 @@
 package com.homeservices.service;
 
+import com.homeservices.dto.request.EmailDto;
 import com.homeservices.enums.Status;
 import com.homeservices.exception.EmailException;
 import com.homeservices.exception.UserProfileException;
-import com.homeservices.request.dto.EmailDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -17,17 +17,19 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.homeservices.dto.common.MyUser;
+import com.homeservices.dto.response.GeneralResponse;
 import com.homeservices.enums.URole;
 import com.homeservices.model.Role;
 import com.homeservices.model.UserProfile;
 import com.homeservices.repo.RoleRepo;
 import com.homeservices.repo.UnAuthUserRepo;
 import com.homeservices.repo.UserProfileRepo;
-import com.homeservices.response.dto.GeneralResponse;
 import com.homeservices.security.util.JwtUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -256,5 +258,15 @@ private final ObjectMapper mapper = new ObjectMapper();
 
 		return body;
 	}
-
+	
+	
+	public static MyUser getUser() {
+		MyUser user = null;
+		Object principal = SecurityContextHolder.getContext()!=null?SecurityContextHolder.getContext().getAuthentication().getPrincipal():null;
+		user = (MyUser) principal;
+		if(principal != null && !principal.toString().equalsIgnoreCase("anonymousUser")) {
+			user = ((MyUser) principal);
+		}
+		return user;
+	}
 }

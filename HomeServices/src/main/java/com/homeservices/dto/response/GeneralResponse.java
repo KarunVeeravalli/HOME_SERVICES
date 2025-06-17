@@ -1,4 +1,4 @@
-package com.homeservices.response.dto;
+package com.homeservices.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;

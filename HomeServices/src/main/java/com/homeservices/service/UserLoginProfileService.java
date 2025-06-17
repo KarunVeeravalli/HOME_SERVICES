@@ -2,17 +2,17 @@ package com.homeservices.service;
 
 import java.util.List;
 
+import com.homeservices.dto.request.LoginRequest;
+import com.homeservices.dto.request.OtpDto;
+import com.homeservices.dto.request.PasswordDto;
+import com.homeservices.dto.request.RequestDto;
+import com.homeservices.dto.request.SignupRequest;
 import com.homeservices.enums.Status;
 import com.homeservices.exception.EmailException;
 import com.homeservices.exception.OtpEntityException;
 import com.homeservices.exception.UnAuthUserException;
 import com.homeservices.exception.UserLoginProfileException;
 import com.homeservices.exception.UserProfileException;
-import com.homeservices.request.dto.LoginRequest;
-import com.homeservices.request.dto.OtpDto;
-import com.homeservices.request.dto.PasswordDto;
-import com.homeservices.request.dto.RequestDto;
-import com.homeservices.request.dto.SignupRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.homeservices.dto.request.LoginRequest;
+import com.homeservices.dto.request.OtpDto;
+import com.homeservices.dto.request.PasswordDto;
+import com.homeservices.dto.request.RequestDto;
+import com.homeservices.dto.request.SignupRequest;
+import com.homeservices.dto.response.GeneralResponse;
 import com.homeservices.enums.Status;
 import com.homeservices.exception.EmailException;
 import com.homeservices.exception.OtpEntityException;
 import com.homeservices.exception.UnAuthUserException;
 import com.homeservices.exception.UserLoginProfileException;
 import com.homeservices.exception.UserProfileException;
-import com.homeservices.request.dto.LoginRequest;
-import com.homeservices.request.dto.OtpDto;
-import com.homeservices.request.dto.PasswordDto;
-import com.homeservices.request.dto.RequestDto;
-import com.homeservices.request.dto.SignupRequest;
-import com.homeservices.response.dto.GeneralResponse;
 import com.homeservices.service.UserLoginProfileService;
 import com.homeservices.util.RepoHelper;
 
