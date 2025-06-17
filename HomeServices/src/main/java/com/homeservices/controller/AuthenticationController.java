@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.homeservices.dto.common.CRequest;
 import com.homeservices.dto.request.LoginRequest;
 import com.homeservices.dto.request.OtpDto;
 import com.homeservices.dto.request.PasswordDto;
@@ -49,14 +50,19 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> register(@RequestBody String signupRequest, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : register (BEGIN) ------>");
 		try {
-			String res = service.register(helper.string2Object(signupRequest, SignupRequest.class), request, response);
+			SignupRequest req = helper.string2Object(signupRequest, SignupRequest.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			String res = service.register(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : register (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : register (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 		
@@ -66,14 +72,19 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  verifyOtpForRegister(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, OtpEntityException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : verifyOtpForRegister (BEGIN) ------>");
 		try {
-			Status res = service.verifyOtpForRegister(helper.string2Object(dto, OtpDto.class), request, response);
+			OtpDto req = helper.string2Object(dto, OtpDto.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			Status res = service.verifyOtpForRegister(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : verifyOtpForRegister (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : verifyOtpForRegister (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -82,14 +93,19 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> changePassword(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, OtpEntityException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : changePassword (BEGIN) ------>");
 		try {
-			String res = service.changePassword(helper.string2Object(dto, PasswordDto.class), request, response);
+			PasswordDto req = helper.string2Object(dto, PasswordDto.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			String res = service.changePassword(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : changePassword (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : changePassword (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -98,30 +114,40 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> login(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : login (BEGIN) ------>");
 		try {
-			String res = service.login(helper.string2Object(dto, LoginRequest.class), request, response);
+			LoginRequest req = helper.string2Object(dto, LoginRequest.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			String res = service.login(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : login (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : login (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@GetMapping("/getAllUserNames")
-	public ResponseEntity<GeneralResponse> getAllUserNames(HttpServletRequest request, HttpServletResponse response)
+	public ResponseEntity<GeneralResponse> getAllUserNames(@RequestBody String dto ,HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : getAllUserNames (BEGIN) ------>");
 		try {
+			CRequest req = helper.string2Object(dto, CRequest.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
 			List<String> res = service.getAllUserNames( request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : getAllUserNames (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : getAllUserNames (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -130,30 +156,40 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  verifyOtpForPasswordUpdate(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : verifyOtpForPasswordUpdate (BEGIN) ------>");
 		try {
-			Status res = service.verifyOtpForPasswordUpdate(helper.string2Object(dto, OtpDto.class), request, response);
+			OtpDto req = helper.string2Object(dto, OtpDto.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			Status res = service.verifyOtpForPasswordUpdate(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : verifyOtpForPasswordUpdate (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : verifyOtpForPasswordUpdate (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@PostMapping("/logout")
-	public ResponseEntity<GeneralResponse>  logout(HttpServletRequest request, HttpServletResponse response)
+	public ResponseEntity<GeneralResponse>  logout(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : logout (BEGIN) ------>");
 		try {
+			CRequest req = helper.string2Object(dto, CRequest.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
 			Status res = service.logout( request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : logout (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : logout (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -162,14 +198,19 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  deleteUserByEmail(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : deleteUserByEmail (BEGIN) ------>");
 		try {
-			Status res = service.deleteUserByEmail(helper.string2Object(dto, RequestDto.class), request, response);
+			RequestDto req = helper.string2Object(dto, RequestDto.class);
+			logger.info("user's tracking id is : {}", req.getHeader().getTrackingId());
+			Status res = service.deleteUserByEmail(req, request, response);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : deleteUserByEmail (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : deleteUserByEmail (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -181,14 +222,18 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  encrypt(@RequestBody Object req, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		logger.info("<------ AuthenticationController : encrypt (BEGIN) ------>");
 		try {
+			logger.info("user's tracking name is : {}", request.getUserPrincipal().getName());
 			String res = helper.object2String(req);
 			gRes.setData(res);
 			gRes.setResponseCode(200);
+			logger.info("<------ AuthenticationController : encrypt (END) ------>");
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
+			logger.info("<------ AuthenticationController : encrypt (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -1,6 +1,6 @@
 package com.homeservices.dto.request;
 
-import com.homeservices.util.CRequest;
+import com.homeservices.dto.common.CRequest;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
