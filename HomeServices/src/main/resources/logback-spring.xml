@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOGS" value="./logs/" />
+
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] - %-5level %logger{5} - [%X{API_NAME}] - %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/app.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d %p %C{1} [%t] %m%n</Pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/archived/app-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+
+	<!--<appender name="GEN_STAT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/code-gen-stat.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/archived/code-gen-stat-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>-->
+
+<!--	<appender name="API_STAT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/api-stat.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/archived/api-stat-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>-->
+
+<!--	<logger name="apiStat" level="DEBUG">
+		<appender-ref ref="API_STAT_FILE" />
+	</logger>-->
+
+	<!--<logger name="codeGenStat" level="DEBUG">
+		<appender-ref ref="GEN_STAT_FILE" />
+	</logger>
+-->
+	<logger name="com.homeservice" level="INFO"/>
+
+<!--	<logger name="xsdschematojavabeanschemmapper.logger" level="INFO" />
+	<logger name="com.github.mustachejava" level="INFO"/>
+	<logger name="org.apache" level="INFO" />
+	<logger name="com.networknt.schema" level="INFO" />-->
+	<logger name="org.springframework" level="INFO" />
+	<!-- LOG everything at INFO level -->
+	<root level="INFO">
+		<appender-ref ref="RollingFile" />
+		<appender-ref ref="Console" />
+	</root>
+
+
+</configuration>
