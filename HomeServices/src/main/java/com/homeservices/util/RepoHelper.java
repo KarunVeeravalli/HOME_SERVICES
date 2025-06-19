@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.homeservices.dto.common.Header;
 import com.homeservices.dto.common.MyUser;
+import com.homeservices.dto.request.Request;
 import com.homeservices.dto.response.GeneralResponse;
 import com.homeservices.enums.URole;
 import com.homeservices.model.Role;
@@ -32,6 +34,7 @@ import com.homeservices.repo.UnAuthUserRepo;
 import com.homeservices.repo.UserProfileRepo;
 import com.homeservices.security.util.JwtUtils;
 
+import aj.org.objectweb.asm.TypeReference;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
@@ -89,13 +92,35 @@ private final ObjectMapper mapper = new ObjectMapper();
 			if(encryptedFlag.equals("true")) {
 				req = decryptAES(req, secretKey);
 			}
-			return mapper.readValue(req, type);
+			System.out.println(req);
+			Request<?> request = mapper.readValue(req, Request.class);
+			System.out.println(request);
+	        Object bodyObj = request.getRequestBody();
+	        String bodyJson = mapper.writeValueAsString(bodyObj); 
+	        return mapper.readValue(bodyJson, type); 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			throw new RuntimeException("Some error while decoding");
 		}
 	}	
 	
+	
+	public  Header getHeader(String req) {
+		try {
+			if(encryptedFlag.equals("true")) {
+				req = decryptAES(req, secretKey);
+			}
+			
+			Request<?> request = mapper.readValue(req, Request.class);
+
+	        Object bodyObj = request.getRequestHeader();
+	        String bodyJson = mapper.writeValueAsString(bodyObj); 
+	        return mapper.readValue(bodyJson, Header.class); 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException("Some error while decoding the Header");
+		}
+	}	
 	
 	public  String object2String(Object req) {
 		try {
@@ -263,10 +288,14 @@ private final ObjectMapper mapper = new ObjectMapper();
 	public static MyUser getUser() {
 		MyUser user = null;
 		Object principal = SecurityContextHolder.getContext()!=null?SecurityContextHolder.getContext().getAuthentication().getPrincipal():null;
-		user = (MyUser) principal;
 		if(principal != null && !principal.toString().equalsIgnoreCase("anonymousUser")) {
+			System.out.println(principal);
 			user = ((MyUser) principal);
 		}
 		return user;
+	}
+	
+	public static Boolean isLoggedIn() {
+		return SecurityContextHolder.getContext()!=null?SecurityContextHolder.getContext().getAuthentication().isAuthenticated():false;
 	}
 }

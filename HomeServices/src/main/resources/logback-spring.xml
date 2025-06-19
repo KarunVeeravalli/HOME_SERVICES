@@ -5,7 +5,7 @@
 
 	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<pattern>%d{HH:mm:ss.SSS} [%thread] - %-5level %logger{5} - [%X{API_NAME}] - %msg%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] - %-5level %logger{5} - [%X{API_NAME}] - %green(%msg%n)</pattern>
 		</layout>
 	</appender>
 

@@ -1,7 +1,5 @@
 package com.homeservices.dto.request;
 
-import com.homeservices.dto.common.CRequest;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestDto extends CRequest{
+public class RequestDto {
 	
 	private String email;
 	

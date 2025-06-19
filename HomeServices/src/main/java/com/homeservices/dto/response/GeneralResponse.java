@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class GeneralResponse {
 	
 	private List<Error> errors = new ArrayList<>();
+	private String exceptionMsg;
 	private List<Exception> exceptions = new ArrayList<>();
 	private Object data;
 	private Integer responseCode ;
