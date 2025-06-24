@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.homeservices.dto.request.AddressDto;
 import com.homeservices.exception.AddressException;
 import com.homeservices.exception.UserProfileException;
 import com.homeservices.model.Address;
@@ -35,10 +36,11 @@ public class AddressServiceImpl implements AddressService{
 	public static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
 
 	@Override
-	public Address addAddress(Address address, HttpServletRequest request, HttpServletResponse response)
+	public Address addAddress(AddressDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
-		logger.info("<------ AddressServiceImpl : addAddress (BEGIN) with request => {} ------>",address);
+		logger.info("<------ AddressServiceImpl : addAddress (BEGIN) with request => {} ------>",dto);
 //		repo.save(address);
+		Address address = Address.build(dto);
 		try {
 			UserProfile userProfile =  helper.getUserProfile(request);
 			address.setUserProfile(userProfile);
@@ -52,10 +54,11 @@ public class AddressServiceImpl implements AddressService{
 	}
 
 	@Override
-	public Address updateAddress(Address address, HttpServletRequest request, HttpServletResponse response)
+	public Address updateAddress(AddressDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
-		Address oldAddress = repo.findById(address.getId()).get();
-		logger.info("<------ AddressServiceImpl : updateAddress (BEGIN) with request => {} ------>",address);
+		Address oldAddress = repo.findById(dto.getId()).get();
+		logger.info("<------ AddressServiceImpl : updateAddress (BEGIN) with request => {} ------>",dto);
+		Address address = Address.build(dto);
 		try {
 			BeanUtils.copyProperties(address, oldAddress, helper.getNullPropertyNames(address));
 			repo.save(oldAddress);
@@ -92,7 +95,7 @@ public class AddressServiceImpl implements AddressService{
 	}
 
 	@Override
-	public String deleteAddress(Long id, HttpServletResponse response, HttpServletRequest request)
+	public String deleteAddress(Long id,  HttpServletRequest request,HttpServletResponse response)
 			throws AddressException, UserProfileException {
 		logger.info("<------ AddressServiceImpl : deleteAddress (BEGIN) with request => {} ------>",id);
 		Address address = repo.findById(id).get();

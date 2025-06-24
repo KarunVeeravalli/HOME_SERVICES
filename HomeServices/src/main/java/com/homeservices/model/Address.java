@@ -1,6 +1,8 @@
 package com.homeservices.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.homeservices.dto.request.AddressDto;
+import com.homeservices.enums.AddressType;
 import com.homeservices.util.CommonClass;
 
 import jakarta.persistence.Entity;
@@ -24,9 +26,28 @@ public class Address extends CommonClass{
 	public String street;
 	public String description;
 	public String mobileNumber;
+	public AddressType addressType;
+	
 	
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name="USERPROFILE_ID")
 	public UserProfile userProfile;
+	
+	 public static Address build(AddressDto dto) {
+	        Address address = new Address();
+	        address.setState(dto.state);
+	        address.setCity(dto.city);
+	        address.setVillage(dto.village);
+	        address.setDoorNo(dto.doorNo);
+	        address.setPincode(dto.pincode);
+	        address.setStreet(dto.street);
+	        address.setDescription(dto.description);
+	        address.setMobileNumber(dto.mobileNumber);
+	        address.setAddressType(dto.addressType);
+	        address.setId(dto.getId());
+	        return address;
+	    }
+	
+	
 }

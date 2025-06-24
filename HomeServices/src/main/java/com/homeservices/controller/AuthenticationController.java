@@ -48,13 +48,14 @@ public class AuthenticationController {
 	private static final Logger logger = LogManager.getLogger(AuthenticationController.class);
 	
 	@PostMapping("/signup")
-	public ResponseEntity<GeneralResponse> register(@RequestBody String signupRequest, HttpServletRequest request, HttpServletResponse response)
+	public ResponseEntity<GeneralResponse> register(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : register (BEGIN) ------>");
 		try {
-			SignupRequest req = helper.string2Object(signupRequest, SignupRequest.class);
-			Header header = helper.getHeader(signupRequest);
+			SignupRequest req = helper.string2Object(dto, SignupRequest.class);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			String res = service.register(req, request, response);
 			gRes.setData(helper.object2String(res));
@@ -63,9 +64,9 @@ public class AuthenticationController {
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.setExceptionMsg(e.getMessage());
-			gRes.getExceptions().add(e);
+//			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
-			logger.info("<------ AuthenticationController : register (FAILED) ------>");
+			logger.info("<------ AuthenticationController : register (FAILED) with message = {}------>",e.getMessage());
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 		
@@ -75,10 +76,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  verifyOtpForRegister(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, OtpEntityException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : verifyOtpForRegister (BEGIN) ------>");
 		try {
 			OtpDto req = helper.string2Object(dto, OtpDto.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			Status res = service.verifyOtpForRegister(req, request, response);
 			gRes.setData(helper.object2String(res));
@@ -87,7 +89,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.setExceptionMsg(e.getMessage());
-			gRes.getExceptions().add(e);
+//			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
 			logger.info("<------ AuthenticationController : verifyOtpForRegister (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
@@ -98,10 +100,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> changePassword(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, OtpEntityException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : changePassword (BEGIN) ------>");
 		try {
 			PasswordDto req = helper.string2Object(dto, PasswordDto.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			String res = service.changePassword(req, request, response);
 			gRes.setData(helper.object2String(res));
@@ -110,7 +113,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.setExceptionMsg(e.getMessage());
-			gRes.getExceptions().add(e);
+//			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
 			logger.info("<------ AuthenticationController : changePassword (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
@@ -121,10 +124,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> login(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, EmailException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : login (BEGIN) ------>");
 		try {
 			LoginRequest req = helper.string2Object(dto, LoginRequest.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			String res = service.login(req, request, response);
 			gRes.setData(helper.object2String(res));
@@ -133,7 +137,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.setExceptionMsg(e.getMessage());
-			gRes.getExceptions().add(e);
+//			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
 			logger.info("<------ AuthenticationController : login (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
@@ -144,10 +148,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse> getAllUserNames(@RequestBody String dto ,HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : getAllUserNames (BEGIN) ------>");
 		try {
 			CRequest req = helper.string2Object(dto, CRequest.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			List<String> res = service.getAllUserNames( request, response);
 			gRes.setData(helper.object2String(res));
@@ -156,7 +161,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(gRes);
 		} catch (Exception e) {
 			gRes.setExceptionMsg(e.getMessage());
-			gRes.getExceptions().add(e);
+//			gRes.getExceptions().add(e);
 			gRes.setResponseCode(400);
 			logger.info("<------ AuthenticationController : getAllUserNames (FAILED) ------>");
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
@@ -167,10 +172,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  verifyOtpForPasswordUpdate(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : verifyOtpForPasswordUpdate (BEGIN) ------>");
 		try {
 			OtpDto req = helper.string2Object(dto, OtpDto.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			Status res = service.verifyOtpForPasswordUpdate(req, request, response);
 			gRes.setData(helper.object2String(res));
@@ -190,10 +196,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  logout(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : logout (BEGIN) ------>");
 		try {
 			CRequest req = helper.string2Object(dto, CRequest.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			Status res = service.logout( request, response);
 			gRes.setData(helper.object2String(res));
@@ -213,10 +220,11 @@ public class AuthenticationController {
 	public ResponseEntity<GeneralResponse>  deleteUserByEmail(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
+		Header header = helper.getHeader(dto);
+		gRes.setHeader(header);
 		logger.info("<------ AuthenticationController : deleteUserByEmail (BEGIN) ------>");
 		try {
 			RequestDto req = helper.string2Object(dto, RequestDto.class);
-			Header header = helper.getHeader(dto);
 			logger.info("user's tracking id is : {}", header.getTrackingId());
 			Status res = service.deleteUserByEmail(req, request, response);
 			gRes.setData(helper.object2String(res));
