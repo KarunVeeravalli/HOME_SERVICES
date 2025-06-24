@@ -1,5 +1,6 @@
 package com.homeservices.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,5 +42,5 @@ public class UserProfile extends CommonClass{
 	
 	@OneToMany(mappedBy = "userProfile", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Address> addresses;
+	private List<Address> addresses = new ArrayList<>();
 }

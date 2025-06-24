@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.homeservices.util.CommonClass;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +27,6 @@ public class Address extends CommonClass{
 	
 	@ManyToOne
 	@JsonIgnore
+	@JoinColumn(name="USERPROFILE_ID")
 	public UserProfile userProfile;
 }
