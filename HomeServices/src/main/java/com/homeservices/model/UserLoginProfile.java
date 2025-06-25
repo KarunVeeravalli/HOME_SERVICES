@@ -26,6 +26,8 @@ public class UserLoginProfile extends CommonClass {
 	
 	private String password;
 	
+	private Boolean isActive;
+	
 	private Long mobileNumber;
 	
 	@ManyToMany(fetch = FetchType.EAGER)

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.homeservices.exception.UserLoginProfileException;
 import com.homeservices.model.UserLoginProfile;
 import com.homeservices.repo.UserLoginProfileRepo;
 
@@ -22,6 +23,9 @@ public class UserDetailsImplService implements UserDetailsService{
 			user = loginProfileRepo.findByEmail(username);
 		}else {
 			user = loginProfileRepo.findByUsername(username);
+		}
+		if(user.getIsActive().equals(false)) {
+			throw new UsernameNotFoundException("User Profile got Deactivated Please contact support team for re Activating");
 		}
 		
 		if(user==null) {

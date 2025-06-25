@@ -33,6 +33,8 @@ public class UserProfile extends CommonClass{
 	
 	private Long mobileNumber;
 	
+	private Boolean isActive;
+	
 	@Lob
 	private String imageInBase64;
 	
