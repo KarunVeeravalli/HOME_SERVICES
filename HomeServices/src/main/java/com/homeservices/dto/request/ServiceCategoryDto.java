@@ -7,14 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class EmailDto extends CRequest{
-	
-	private String toEmail;
-	
-	private String body;
-	
-	private String subject;
-	
+@AllArgsConstructor
+public class ServiceCategoryDto extends CRequest{
+	private String name;
+	private String description;
+	private String iconUrl;
 }
