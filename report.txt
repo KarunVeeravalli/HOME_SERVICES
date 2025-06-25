@@ -4,7 +4,7 @@ Modules to be completed
 1) Tables need to be create ()
 2) Check the category functionality
 
-
+***** Mainly need change the delete section in every TABLE for deactivating people *****
 
 Completed modules
 ------------------
