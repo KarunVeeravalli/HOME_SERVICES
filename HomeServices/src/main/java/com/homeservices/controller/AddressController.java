@@ -7,6 +7,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +39,8 @@ public class AddressController {
 	
 	@Autowired
 	private AddressService service;
-
+	
+	@PostMapping("/addAddress")
 	public ResponseEntity<GeneralResponse> addAddress( @RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
@@ -60,6 +65,7 @@ public class AddressController {
 		}
 	}
 
+	@PostMapping("/updateAddress")
 	public ResponseEntity<GeneralResponse> updateAddress(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
@@ -82,7 +88,8 @@ public class AddressController {
 			return new ResponseEntity<>(gRes,HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	@PostMapping("/getAddress")
 	public ResponseEntity<GeneralResponse> getAddress(@RequestBody String dto, HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
@@ -106,6 +113,7 @@ public class AddressController {
 		}
 	}
 
+	@PostMapping("/getAllAddresses")
 	public ResponseEntity<GeneralResponse> getAllAddresses(@RequestBody String dto,HttpServletRequest request, HttpServletResponse response)
 			throws AddressException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
@@ -129,6 +137,7 @@ public class AddressController {
 		}
 	}
 
+	@PostMapping("/deleteAddress")
 	public ResponseEntity<GeneralResponse> deleteAddress(@RequestBody String dto, HttpServletResponse response, HttpServletRequest request)
 			throws AddressException, UserProfileException {
 		GeneralResponse gRes = new GeneralResponse();
