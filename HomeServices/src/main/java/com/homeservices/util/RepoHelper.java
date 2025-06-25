@@ -213,6 +213,16 @@ private final ObjectMapper mapper = new ObjectMapper();
 		UserProfile profile = userProfileRepository.getUserByEmail(emial);
 		return profile != null ? true : false;
 	}
+	
+	public Boolean isUserExistsByUsername(String username) {
+		UserProfile profile = userProfileRepository.getUserByUsername(username);
+		return profile != null ? true : false;
+	}
+	
+	public Boolean isUserExistsByMobileNumber(String mobileNumber) {
+		UserProfile profile = userProfileRepository.getUserByMobileNumber(mobileNumber);
+		return profile != null ? true : false;
+	}
 
 	public UserProfile getUserProfile(HttpServletRequest request) {
 		UserProfile profile = userProfileRepository.getUserByEmail(getUsernameFromToken(request));

@@ -12,6 +12,7 @@ import com.homeservices.dto.request.ServiceItemDto;
 import com.homeservices.exception.ServiceCategoryException;
 import com.homeservices.exception.ServiceItemException;
 import com.homeservices.exception.UserProfileException;
+import com.homeservices.model.ServiceCategory;
 import com.homeservices.model.ServiceItem;
 import com.homeservices.repo.ServiceCategoryRepo;
 import com.homeservices.repo.ServiceItemRepo;
@@ -42,7 +43,10 @@ public class ServiceItemServiceImpl implements ServiceItemService{
 		if(helper.IsSuperAdminOrAdmin(request)) {
 			if(categoryRepo.existsById(dto.getCategoryId())) {
 				if(!repo.existsByName(dto.getName())) {
-					ServiceItem item = repo.save(ServiceItem.build(dto));
+					ServiceItem item = ServiceItem.build(dto);
+					ServiceCategory cat = categoryRepo.findById(dto.getCategoryId()).get();
+					item.setCategory(cat);
+					item = repo.save(item);
 					logger.info("<------ ServiceItemServiceImpl : addServiceItem (END) with request => {} ------>",item);
 					return item;
 				}else {

@@ -24,4 +24,5 @@ public class CRequest {
 	public String jwt = RepoHelper.isLoggedIn()?RepoHelper.getUser()!=null?RepoHelper.getUser().getJwtToken():null:null;
 	
 	public Long id;
+	
 }

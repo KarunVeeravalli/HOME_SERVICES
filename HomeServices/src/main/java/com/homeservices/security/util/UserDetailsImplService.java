@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.homeservices.model.UserLoginProfie;
+import com.homeservices.model.UserLoginProfile;
 import com.homeservices.repo.UserLoginProfileRepo;
 
 @Service
@@ -17,7 +17,7 @@ public class UserDetailsImplService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserLoginProfie user = new UserLoginProfie();
+		UserLoginProfile user = new UserLoginProfile();
 		if(username.contains("@gmail.com")) {
 			user = loginProfileRepo.findByEmail(username);
 		}else {

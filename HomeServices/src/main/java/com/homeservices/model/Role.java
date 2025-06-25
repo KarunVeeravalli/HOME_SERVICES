@@ -5,6 +5,8 @@ import com.homeservices.util.CommonClass;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class Role extends CommonClass{
 	
 	@Column(length = 20)
+	@Enumerated(EnumType.STRING)
 	private URole name;
 	
 	 	public Role(Long id, URole name) {

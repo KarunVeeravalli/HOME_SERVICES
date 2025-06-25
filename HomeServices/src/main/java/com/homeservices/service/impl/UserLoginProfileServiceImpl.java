@@ -34,7 +34,7 @@ import com.homeservices.model.OtpEntity;
 import com.homeservices.model.Role;
 import com.homeservices.model.TempPassword;
 import com.homeservices.model.UnAuthUser;
-import com.homeservices.model.UserLoginProfie;
+import com.homeservices.model.UserLoginProfile;
 import com.homeservices.model.UserProfile;
 import com.homeservices.repo.OtpEntityRepo;
 import com.homeservices.repo.RoleRepo;
@@ -146,7 +146,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 				if(stat.equals(Status.FAILED)) {
 					throw new OtpEntityException("Invalid OTP , please try again");
 				}
-				UserLoginProfie profile = new UserLoginProfie();
+				UserLoginProfile profile = new UserLoginProfile();
 				profile.setEmail(user.getEmail());
 				profile.setMobileNumber(user.getMobileNum());
 				profile.setPassword(user.getPassword());
@@ -206,7 +206,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 		if(!helper.isUserExistsByEmail(dto.getEmail())) {
 			throw new UserLoginProfileException("User Doesn't exists with email ----> "+dto.getEmail());
 		}
-		UserLoginProfie user = repo.findByEmail(dto.getEmail());
+		UserLoginProfile user = repo.findByEmail(dto.getEmail());
 		if(encoder.matches(dto.getOldPassword(), user.getPassword())) {
 			TempPassword tempPassword = new TempPassword(dto.getEmail(), encoder.encode(dto.getPassword()));
 			tempPasswordRepo.save(tempPassword);
@@ -251,8 +251,8 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 	public List<String> getAllUserNames(HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
 		logger.info("<------ UserLoginProfileServiceImpl : getAllUserNames (BEGIN) ------>");
-		List<UserLoginProfie> users = repo.findAll();
-		List<String> names = users.stream().map(UserLoginProfie::getUsername).collect(Collectors.toList());
+		List<UserLoginProfile> users = repo.findAll();
+		List<String> names = users.stream().map(UserLoginProfile::getUsername).collect(Collectors.toList());
 		logger.info("<------ UserLoginProfileServiceImpl : getAllUserNames (END) with response => {} ----->",names);
 		return names ;
 	}
@@ -276,7 +276,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 			throw new UserLoginProfileException("No Record found , please try again");
 		}
 		else if(otp.getOtp().equals(dto.getOtp())) {
-			UserLoginProfie user = repo.findByEmail(dto.getEmail());
+			UserLoginProfile user = repo.findByEmail(dto.getEmail());
 			user.setPassword(pass.getPassword());
 			logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (END) with response => {} ----->","SUCCESS");
 			return Status.SUCCESS;

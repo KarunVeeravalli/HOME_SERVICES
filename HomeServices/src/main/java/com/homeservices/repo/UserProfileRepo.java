@@ -14,4 +14,10 @@ public interface UserProfileRepo extends JpaRepository<UserProfile, Long>{
 
 	public void deleteByEmail(String email);
 
+	@Query("select t from UserProfile t where username= :username")
+	public UserProfile getUserByUsername(String username);
+
+	@Query("select t from UserProfile t where mobileNumber= :mobileNumber")
+	public UserProfile getUserByMobileNumber(String mobileNumber);
+
 }
