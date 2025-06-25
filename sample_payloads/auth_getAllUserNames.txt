@@ -1,0 +1,40 @@
+endpoint -> /auth/getAllUserNames
+
+
+
+sample JSON request
+--------------------
+
+    {
+      "header": {
+        "channel": "web",
+        "deviceId": "device-9876543210",
+        "locale": "en_us",
+        "trackingId": "123e4567-e89b-12d3-a456-426614174000",
+        "timestamp": "2025-06-19T15:30:00Z",
+        "browserDetails": "Chrome",
+        "browserVersion": "114.0.5735.198"
+      },
+      "requestedDateTime": "2025-06-19T15:30:00Z",
+      "userId": 101,
+      "username": "john_doe",
+      "jwt": ""
+    }
+
+
+sample encrypted request
+-------------------------
+1qVRJI0qpSWsxfRFL0GA9I2sVxFhUdu413CtHNIeR1ZYIXL4af7pv2k9uL7TOJCEVKa2y8+e3623Ymt6MgB65TJ9ZAzlTSpKKg466bxzMHjEWzLV2lwGgpamDWFo7IZqCLZHMJHNXf4smMaDYa2Ue3hLHBLq2xKmm48cXBIl0qxBSNenJZspdUAP1GQZl1F/DmhPAFTLVPg7x9it7/Tg4RP57U/ADUZGO22DReU34MN3LX5Bm3/ho0HayZBGkyClwYrt7fOP2QWVpJFBBd7q0DM93Lqy2oL/OzH/VirpYTlSI8Sn5ffiPEVpPT92j7NtxJvc+YbEGYb/QyU20vchw4LCR+bUAUWhED14nJXS/KHvXVWs0tIfdOhCeQu5RvO5VpIm8nfI2mW884jaHgECSZERh6Myu+oawNh0+mMLUVI=
+
+
+
+sample JSON response
+--------------------
+
+{
+    "errors": [],
+    "exceptions": [],
+    "data": [],
+    "responseCode": 200
+}
+

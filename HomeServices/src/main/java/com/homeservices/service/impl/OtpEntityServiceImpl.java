@@ -2,6 +2,8 @@ package com.homeservices.service.impl;
 
 import java.time.LocalDateTime;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +22,18 @@ public class OtpEntityServiceImpl implements OtpEntityService{
 	
 	@Autowired
 	private OtpEntityRepo repo;
+	
+	public final static Logger logger = LogManager.getLogger(OtpEntityServiceImpl.class);
 
 	@Override
 	public void saveOtp(OtpEntity otp, HttpServletRequest request, HttpServletResponse response)
 			throws UserProfileException, OtpEntityException {
+		logger.info("<------ OtpEntityServiceImpl : saveOtp (BEGIN) with request => {} ------>",otp);
 		try {
 			repo.save(otp);
+			logger.info("<------ OtpEntityServiceImpl : saveOtp (END) ------>");
 		} catch (Exception e) {
-
+			logger.info("<------ OtpEntityServiceImpl : saveOtp (FAILED) ------>");
 		}
 		
 	}
@@ -36,9 +42,12 @@ public class OtpEntityServiceImpl implements OtpEntityService{
 	public OtpEntity getLastOtp(String email, HttpServletRequest request, HttpServletResponse response)
 			throws UserProfileException, OtpEntityException {
 		OtpEntity otp = repo.getLastOtpByEmail(email);
+		logger.info("<------ OtpEntityServiceImpl : getLastOtp (BEGIN) with request => {} ------>",email);
 		if(otp==null) {
+			logger.info("<------ OtpEntityServiceImpl : getLastOtp (FAILED) ------>");
 			throw new OtpEntityException("There is no otp found with the email----> "+email);
 		}
+		logger.info("<------ OtpEntityServiceImpl : getLastOtp (END) ------>");
 		return otp;
 	}
 

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginProfie extends CommonClass {
+public class UserLoginProfile extends CommonClass {
 	
 	private String username;
 	
@@ -26,13 +26,15 @@ public class UserLoginProfie extends CommonClass {
 	
 	private String password;
 	
+	private Boolean isActive;
+	
 	private Long mobileNumber;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "USER_LOGIN_PROFILE_ROLES", joinColumns = @JoinColumn(name="user_id") ,inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
-	public UserLoginProfie(String username, String email, String password) {
+	public UserLoginProfile(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password= password;

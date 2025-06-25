@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.homeservices.dto.request.EmailDto;
+import com.homeservices.dto.request.LoginRequest;
+import com.homeservices.dto.request.OtpDto;
+import com.homeservices.dto.request.PasswordDto;
+import com.homeservices.dto.request.RequestDto;
+import com.homeservices.dto.request.SignupRequest;
 import com.homeservices.enums.Status;
 import com.homeservices.enums.URole;
 import com.homeservices.exception.EmailException;
@@ -26,18 +34,12 @@ import com.homeservices.model.OtpEntity;
 import com.homeservices.model.Role;
 import com.homeservices.model.TempPassword;
 import com.homeservices.model.UnAuthUser;
-import com.homeservices.model.UserLoginProfie;
+import com.homeservices.model.UserLoginProfile;
 import com.homeservices.model.UserProfile;
 import com.homeservices.repo.OtpEntityRepo;
 import com.homeservices.repo.RoleRepo;
 import com.homeservices.repo.TempPasswordRepo;
 import com.homeservices.repo.UserLoginProfileRepo;
-import com.homeservices.request.dto.EmailDto;
-import com.homeservices.request.dto.LoginRequest;
-import com.homeservices.request.dto.OtpDto;
-import com.homeservices.request.dto.PasswordDto;
-import com.homeservices.request.dto.RequestDto;
-import com.homeservices.request.dto.SignupRequest;
 import com.homeservices.security.util.JwtUtils;
 import com.homeservices.security.util.TokenBlackList;
 import com.homeservices.service.EmailService;
@@ -92,9 +94,12 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 	@Autowired
 	private TokenBlackList tokenBlackList;
 	
+	public static final Logger logger = LogManager.getLogger(UserLoginProfileServiceImpl.class);
+	
 	@Override
 	public String register(SignupRequest signupRequest, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, EmailException {
+		logger.info("<------ UserLoginProfileServiceImpl : register (BEGIN) with request => {} ------>",signupRequest);
 		if(null!=repo.findByEmail(signupRequest.getEmail())) {
 			throw new UserLoginProfileException("User Already exists with email---> "+signupRequest.getEmail());
 		}
@@ -111,6 +116,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 		if(user!=null) {
 			dto.setSubject("User ALready Added, Please re-try with this OTP");
 			emailService.sendOtp(dto, request, response);
+			logger.info("<------ UserLoginProfileServiceImpl : register (END) ----->");
 			return "User Details Already Added please proceed with otp";
 //			throw new UnAuthUserException("User Already registred please complete the registration by otp");
 		}
@@ -122,7 +128,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 		unAuthUserService.saveUser(unAuthUser, request, response);
 		dto.setSubject("One Time Password for your Regsistration");
 		emailService.sendOtp(dto, request, response);
-		
+		logger.info("<------ UserLoginProfileServiceImpl : register (END) ----->");
 		return "OTP sent Successfully";
 	}
 
@@ -130,7 +136,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 	public Status verifyOtpForRegister(OtpDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UnAuthUserException, UserProfileException, OtpEntityException {
 		UnAuthUser user = unAuthUserService.getUser(dto.getEmail(), request, response);
-		
+		logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForRegister (BEGIN) with request => {} ------>",dto);
 		if(user!=null) {
 			OtpEntity entity = new OtpEntity();
 			entity.setEmail(dto.getEmail());
@@ -140,7 +146,7 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 				if(stat.equals(Status.FAILED)) {
 					throw new OtpEntityException("Invalid OTP , please try again");
 				}
-				UserLoginProfie profile = new UserLoginProfie();
+				UserLoginProfile profile = new UserLoginProfile();
 				profile.setEmail(user.getEmail());
 				profile.setMobileNumber(user.getMobileNum());
 				profile.setPassword(user.getPassword());
@@ -181,37 +187,43 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 						+ "");
 				emailDto.setSubject("Registration Successfull");
 				emailService.sendEmail(emailDto, request, response);
-				
+				logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForRegister (END) with response => {} ----->",Status.SUCCESS);
 				return Status.SUCCESS;
 			} catch (Exception e) {
+				logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForRegister (FAILED) ----->");
 				throw new OtpEntityException("Otp Was invalid please try again after sometime");
 			}
 			
 		}
+		logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForRegister (FAILED) ----->");
 		throw new UnAuthUserException("User doesn't Registered with email ----> "+dto.getEmail());
 	}
 
 	@Override
 	public String changePassword(PasswordDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, OtpEntityException, EmailException {
+		logger.info("<------ UserLoginProfileServiceImpl : changePassword (BEGIN) with request => {} ------>",dto);
 		if(!helper.isUserExistsByEmail(dto.getEmail())) {
 			throw new UserLoginProfileException("User Doesn't exists with email ----> "+dto.getEmail());
 		}
-		UserLoginProfie user = repo.findByEmail(dto.getEmail());
+		UserLoginProfile user = repo.findByEmail(dto.getEmail());
 		if(encoder.matches(dto.getOldPassword(), user.getPassword())) {
 			TempPassword tempPassword = new TempPassword(dto.getEmail(), encoder.encode(dto.getPassword()));
 			tempPasswordRepo.save(tempPassword);
 			EmailDto  emailDto = new EmailDto();
 			emailDto.setSubject("OTP FOR PASSWORD CHANGE");
 			emailService.sendOtp(emailDto, request, response);
+			logger.info("<------ UserLoginProfileServiceImpl : changePassword (END) with response => {} ----->","OTP_SENT_SUCCESSFULLY");
 			return "OTP SENT SUCCESSFULLY";
 		}
+		logger.info("<------ UserLoginProfileServiceImpl : changePassword (FAILED) ----->");
 		throw new UserLoginProfileException("Password is invalid please try again");
 	}
 
 	@Override
 	public String login(LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException, EmailException {
+		logger.info("<------ UserLoginProfileServiceImpl : login (BEGIN) with request => {} ------>",loginRequest);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -231,44 +243,55 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 		emailDto.setBody(body);
 		emailDto.setSubject("Login Successfull");
 		emailService.sendEmail(emailDto, request, response);
+		logger.info("<------ UserLoginProfileServiceImpl : login (END) with response => {} -----> ",jwt);
 		return jwt;
 	}
 
 	@Override
 	public List<String> getAllUserNames(HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
-		List<UserLoginProfie> users = repo.findAll();
-		List<String> names = users.stream().map(UserLoginProfie::getUsername).collect(Collectors.toList());
+		logger.info("<------ UserLoginProfileServiceImpl : getAllUserNames (BEGIN) ------>");
+		List<UserLoginProfile> users = repo.findAll();
+		List<String> names = users.stream().map(UserLoginProfile::getUsername).collect(Collectors.toList());
+		logger.info("<------ UserLoginProfileServiceImpl : getAllUserNames (END) with response => {} ----->",names);
 		return names ;
 	}
 
 	@Override
 	public Status verifyOtpForPasswordUpdate(OtpDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException {
+		logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (BEGIN) with request => {} ------>",dto);
 		if(!helper.isUserExistsByEmail(dto.getEmail())) {
+			logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (FAILED) ------>");
 			throw new UserLoginProfileException("User Doesn't exists with email ----> "+dto.getEmail());
 		}
 		OtpEntity otp = otpEntityRepo.getotpForPasswordChange(dto.getEmail());
 		TempPassword pass = tempPasswordRepo.findByEmail(dto.getEmail());
 		if (otp==null) {
+			logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (FAILED) ------>");
 			throw new UserLoginProfileException("No OTP found , please try again");
 		}
 		else if(pass==null) {
+			logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (FAILED) ------>");
 			throw new UserLoginProfileException("No Record found , please try again");
 		}
 		else if(otp.getOtp().equals(dto.getOtp())) {
-			UserLoginProfie user = repo.findByEmail(dto.getEmail());
+			UserLoginProfile user = repo.findByEmail(dto.getEmail());
 			user.setPassword(pass.getPassword());
+			logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (END) with response => {} ----->","SUCCESS");
 			return Status.SUCCESS;
 		}
+		logger.info("<------ UserLoginProfileServiceImpl : verifyOtpForPasswordUpdate (FAILED) ------>");
 		throw new UserLoginProfileException("OTP is invalid");
 	}
 
 	@Override
 	public Status logout(HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
+		logger.info("<------ UserLoginProfileServiceImpl : logout (BEGIN) ------>");
 		 String jwt = helper.parseJwt(request);
 	      tokenBlackList.addToBlacklist(jwt);
+	      logger.info("<------ UserLoginProfileServiceImpl : logout (END) ------>");
 	      return Status.LOGGED_OUT_SUCCESSFULLY;
 	}
 
@@ -277,7 +300,9 @@ public class UserLoginProfileServiceImpl implements UserLoginProfileService{
 	public Status deleteUserByEmail(RequestDto dto, HttpServletRequest request, HttpServletResponse response)
 			throws UserLoginProfileException, UserProfileException {
 		//this is for temp
+		logger.info("<------ UserLoginProfileServiceImpl : deleteUserByEmail (BEGIN) with request => {} ------>",dto);
 		repo.deleteByEmail(dto.getEmail());
+		logger.info("<------ UserLoginProfileServiceImpl : deleteUserByEmail (END) ------>");
 		return Status.SUCCESS;
 	}
 	

@@ -2,15 +2,15 @@ package com.homeservices.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.homeservices.model.UserLoginProfie;
+import com.homeservices.model.UserLoginProfile;
 
-public interface UserLoginProfileRepo extends JpaRepository<UserLoginProfie, Long>{
+public interface UserLoginProfileRepo extends JpaRepository<UserLoginProfile, Long>{
 
-	UserLoginProfie findByEmail(String username);
+	UserLoginProfile findByEmail(String username);
 
-	UserLoginProfie findByUsername(String username);
+	UserLoginProfile findByUsername(String username);
 
-	UserLoginProfie findByMobileNumber(Long number);
+	UserLoginProfile findByMobileNumber(Long number);
 
 	void deleteByEmail(String email);
 
